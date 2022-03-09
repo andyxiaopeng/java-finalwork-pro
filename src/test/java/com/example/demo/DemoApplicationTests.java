@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.entity.User;
+import com.example.demo.model.entity.User;
 import com.example.demo.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +18,22 @@ class DemoApplicationTests {
     void contextLoads() {
     }
 
-//    @Test
-//    private  void select(){
-//        System.out.println(("----- selectAll method test ------"));
-//        //参数是一个Wrapper，条件结构器，这里先不用 填null
-//        //查询所有的用户
-//        List<User> userList = userMapper.selectList(null);
-////        Assert.assertEquals(5, userList.size());
-////        userList.forEach(System.out::println);
-//
-//        for (User user : userList){
-//            System.out.println(user.getId() + " 名字：" + user.getName());
-//        }
-//
-//        User user = userMapper.selectById("2");
-//        System.out.println(user.getId() + user.getName());
-//    }
+    @Test
+    private  void select(){
+        System.out.println(("----- selectAll method test ------"));
+        //参数是一个Wrapper，条件结构器，这里先不用 填null
+        //查询所有的用户
+        List<User> userList = userMapper.selectList(null);
+//        Assert.assertEquals(5, userList.size());
+//        userList.forEach(System.out::println);
+
+        for (User user : userList){
+            System.out.println(user.getId() + " 名字：" + user.getUsername());
+        }
+
+        User user = userMapper.selectById("2");
+        System.out.println(user.getId() + user.getUsername());
+    }
 
 
     @Test

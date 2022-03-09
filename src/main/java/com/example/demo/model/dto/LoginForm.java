@@ -1,4 +1,4 @@
-package com.example.demo.entity.enterpojo;
+package com.example.demo.model.dto;
 
 import lombok.Data;
 
@@ -8,4 +8,6 @@ public class LoginForm {
     private String password;
 
     private String accessToken;
+
+    private String param;// RSA 加密后的字符串
 }

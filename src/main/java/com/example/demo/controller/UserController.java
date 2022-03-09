@@ -1,19 +1,20 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.entity.enterpojo.LoginForm;
-import com.example.demo.entity.returnpojo.Message;
-import lombok.extern.java.Log;
+import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.entity.User;
+import com.example.demo.model.dto.LoginForm;
+import com.example.demo.model.vo.Message;
+import com.example.demo.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>
@@ -27,21 +28,17 @@ import java.util.Map;
 @CrossOrigin(origins = "*",maxAge = 3600)
 public class UserController {
 
+    @Autowired(required = false)
+    private UserServiceImpl userServiceImpl;
+
     /**
-     * 实现登录加密
+     * 实现登录加密 或者是 实现 服务端认证功能
+     * 暂未实际使用
      * @return
      */
     @RequestMapping("publicKey")
     private Message getPublicKey(){
-        Message<HashMap> message = new Message();
-
-        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
-        objectObjectHashMap.put("mockServer",true);
-        objectObjectHashMap.put("publicKey","MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBT2vr+dhZElF73FJ6xiP181txKWUSNLPQQlid6DUJhGAOZblluafIdLmnUyKE8mMHhT3R+Ib3ssZcJku6Hn72yHYj/qPkCGFv0eFo7G+GJfDIUeDyalBN0QsuiE/XzPHJBuJDfRArOiWvH0BXOv5kpeXSXM8yTt5Na1jAYSiQ/wIDAQAB");
-
-        message.setData(objectObjectHashMap);
-
-        message.initSuccessEessage();
+        Message message = userServiceImpl.getPublicKey();
         return message;
     }
 
@@ -52,14 +49,7 @@ public class UserController {
      */
     @RequestMapping("login")
     public Message login(@RequestBody LoginForm loginForm){
-
-        Message<HashMap> message = new Message();
-        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
-        objectObjectHashMap.put("accessToken","admin-accessToken");
-        message.setData(objectObjectHashMap);
-
-        System.out.println(message.toString());
-        message.initSuccessEessage();
+        Message message = userServiceImpl.login(loginForm);
         return message;
     }
 
@@ -70,25 +60,7 @@ public class UserController {
      */
     @RequestMapping("userInfo")
     public Message userInfo(@RequestBody LoginForm loginForm){
-
-        Message<HashMap> message = new Message();
-        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
-        objectObjectHashMap.put("accessToken","admin-accessToken");
-
-        objectObjectHashMap.put("username","test");
-
-        ArrayList<String> permissions = new ArrayList<>();
-        permissions.add("admin");
-        permissions.add("editor");
-        objectObjectHashMap.put("permissions",permissions);
-
-        ArrayList<String> avatar = new ArrayList<>();
-        avatar.add("https://i.gtimg.cn/club/item/face/img/2/15922_100.gif");
-        avatar.add("https://i.gtimg.cn/club/item/face/img/8/15918_100.gif");
-        objectObjectHashMap.put("avatar","https://i.gtimg.cn/club/item/face/img/2/15922_100.gif");
-        message.setData(objectObjectHashMap);
-
-        message.initSuccessEessage();
+        Message message = userServiceImpl.getUserInfo(loginForm);
         return message;
     }
 
@@ -98,8 +70,7 @@ public class UserController {
      */
     @RequestMapping("logout")
     private Message logout(){
-        Message message = new Message();
-        message.initSuccessEessage();
+        Message message = userServiceImpl.logout();
         return message;
     }
 

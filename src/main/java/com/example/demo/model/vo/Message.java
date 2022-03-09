@@ -1,4 +1,4 @@
-package com.example.demo.entity.returnpojo;
+package com.example.demo.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

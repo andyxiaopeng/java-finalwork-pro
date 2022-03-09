@@ -1,20 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.returnpojo.Message;
-import com.example.demo.manage.returnmanage.MessageMnage;
+import com.example.demo.model.vo.Message;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("changelog")
+@RequestMapping("changeLog")
+@CrossOrigin(origins = "*",maxAge = 3600)
 public class ChangeLog {
 
-    @RequestMapping("getlist")
+    @RequestMapping("getList")
     private Message changeGetList(){
         Message<ArrayList> message = new Message<>();
 
