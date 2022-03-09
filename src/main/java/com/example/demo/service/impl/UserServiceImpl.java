@@ -107,7 +107,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         objectObjectHashMap.put("accessToken",accessToken);
 
         // 凭借token拿 用户的信息，包括权限
-
         // 根据token查询数据库
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("accessToken", accessToken);
