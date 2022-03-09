@@ -1,7 +1,9 @@
 package com.example.demo;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.model.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.utiles.RSAUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +18,43 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    void userSlectTest() {
+        String account = "admin";
+
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("account", account);
+        List<User> users = userMapper.selectList(qw);
+        if (users.size() == 0){
+            System.out.println("meiyou");
+        }
+
+        for (User user : users) {
+            System.out.println("\n\n");
+            System.out.printf(user.getPassword());
+            System.out.println("\n\n");
+
+            boolean b = user.getPassword().equals("123456");
+            if (b) {
+                System.out.println("\n\n");
+                System.out.printf("taaaaaaaaaaaaaarue");
+                System.out.println("\n\n");
+
+
+
+            }
+
+        }
+//        System.out.printf(users.toString());
+    }
+
+    @Test
+    void RSAtests() {
+        RSAUtils rsaUtils = new RSAUtils();
+        rsaUtils.iniRSA();
+        System.out.printf((String) rsaUtils.RSAkeyMap.get("publicKey"));
     }
 
     @Test
