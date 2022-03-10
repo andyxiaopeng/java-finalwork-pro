@@ -38,8 +38,7 @@ public class UserController {
      */
     @RequestMapping("publicKey")
     private Message getPublicKey(){
-        Message message = userServiceImpl.getPublicKey();
-        return message;
+        return userServiceImpl.getPublicKey();
     }
 
     /**
@@ -49,8 +48,7 @@ public class UserController {
      */
     @RequestMapping("login")
     public Message login(@RequestBody LoginForm loginForm){
-        Message message = userServiceImpl.login(loginForm);
-        return message;
+        return userServiceImpl.login(loginForm);
     }
 
     /**
@@ -60,8 +58,7 @@ public class UserController {
      */
     @RequestMapping("userInfo")
     public Message userInfo(@RequestBody LoginForm loginForm){
-        Message message = userServiceImpl.getUserInfo(loginForm);
-        return message;
+        return userServiceImpl.getUserInfo(loginForm);
     }
 
     /**
@@ -70,8 +67,7 @@ public class UserController {
      */
     @RequestMapping("logout")
     private Message logout(){
-        Message message = userServiceImpl.logout();
-        return message;
+        return userServiceImpl.logout();
     }
 
 }

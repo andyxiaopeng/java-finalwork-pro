@@ -28,7 +28,7 @@ public class ChangeLog {
 
         message.setData(mapArrayList);
 
-        message.initSuccessEessage();
+        message.initSuccessMessage();
         return message;
     }
 }

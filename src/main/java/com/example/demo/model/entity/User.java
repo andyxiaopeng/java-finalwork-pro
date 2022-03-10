@@ -32,10 +32,12 @@ public class User implements Serializable {
 
     private String phone;
 
+    private String email;
+
     @TableField("accessToken")
     private String accesstoken;
 
     private String permissions;
 
-
+    private String creattime;
 }

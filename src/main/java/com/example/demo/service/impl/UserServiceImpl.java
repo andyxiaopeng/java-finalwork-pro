@@ -48,7 +48,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         objectObjectHashMap.put(rsaUtils.PUBLIC_KEY, rsaUtils.RSAkeyMap.get(rsaUtils.PUBLIC_KEY));
 
         message.setData(objectObjectHashMap);
-        message.initSuccessEessage();
+        message.initSuccessMessage();
         return message;
     }
 
@@ -70,7 +70,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         qw.eq("account", account);
         List<User> users = userMapper.selectList(qw);
         if (users.size() == 0){
-            return null;
+             message.initErrorMessage();
+            return message;
         }
         for (User user : users) {
 
@@ -89,7 +90,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
                 objectObjectHashMap.put("accessToken",token);
                 message.setData(objectObjectHashMap);
-                message.initSuccessEessage();
+                message.initSuccessMessage();
 
                 return message;
             }
@@ -132,14 +133,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         message.setData(objectObjectHashMap);
 
-        message.initSuccessEessage();
+        message.initSuccessMessage();
         return message;
     }
 
     @Override
     public Message logout() {
         Message message = new Message();
-        message.initSuccessEessage();
+        message.initSuccessMessage();
         return message;
     }
 }

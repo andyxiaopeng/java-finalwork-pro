@@ -19,7 +19,7 @@ public class TestURL {
         System.out.println(loginForm);
 
         Message<HashMap> message = new Message();
-        message.initSuccessEessage();
+        message.initSuccessMessage();
         return message;
     }
 }
