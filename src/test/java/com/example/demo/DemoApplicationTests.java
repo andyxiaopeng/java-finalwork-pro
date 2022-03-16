@@ -1,8 +1,12 @@
 package com.example.demo;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.demo.mapper.NoticeMapper;
+import com.example.demo.model.entity.Notice;
 import com.example.demo.model.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.vo.Message;
 import com.example.demo.utiles.RSAUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +20,17 @@ class DemoApplicationTests {
     @Autowired(required = false)
     private UserMapper userMapper;
 
+    @Autowired(required = false)
+    private NoticeMapper noticeMapper;
+
     @Test
-    void contextLoads() {
+    void getUserList() {
+        QueryWrapper<Notice> qw = new QueryWrapper<>();
+        List<Notice> notices = noticeMapper.selectList(qw);
+        Message message = new Message();
+        message.setData(notices);
+        message.initSuccessMessage();
+        System.out.println(message);
     }
 
     @Test

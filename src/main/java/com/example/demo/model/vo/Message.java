@@ -26,27 +26,23 @@ public class Message<E> {
     public void initSuccessMessage(){
         this.setCode(200);
         this.setMsg("success");
-        this.setTotalCount(999);
     }
 
     public void invalidCodeMessage(){
-        this.setCode(402);
-        this.setMsg("登录失效");
-        this.setTotalCount(999);
+        this.setCode(500);
+        this.setMsg("帐户或密码不正确。");
         this.data = null;
     }
 
     public void noPermissionCodeMessage(){
         this.setCode(401);
         this.setMsg("无权限");
-        this.setTotalCount(999);
         this.data = null;
     }
 
     public void initErrorMessage(){
         this.setCode(500);
         this.setMsg("Error");
-        this.setTotalCount(999);
         this.data = null;
     }
 

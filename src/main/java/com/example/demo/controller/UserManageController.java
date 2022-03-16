@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.dto.LoginForm;
 import com.example.demo.model.dto.UserManageForm;
+import com.example.demo.model.dto.doDeleteForm;
 import com.example.demo.model.vo.Message;
 import com.example.demo.service.impl.UserManageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class UserManageController {
     }
 
     @RequestMapping("doDelete")
-    private Message doDelete(){
-        return userManageServiceImpl.doDelete();
+    private Message doDelete(@RequestBody doDeleteForm doDelete){
+        return userManageServiceImpl.doDelete(doDelete);
     }
 
 }

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.dto.LoginForm;
 import com.example.demo.model.dto.UserManageForm;
+import com.example.demo.model.dto.doDeleteForm;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.vo.Message;
 import com.example.demo.service.UserManageService;
@@ -25,25 +26,28 @@ public class UserManageServiceImpl extends ServiceImpl<UserMapper, User> impleme
     @Override
     public Message getList(UserManageForm userManageForm) {
 
-        System.out.println(userManageForm);
         //获取前台发送过来的数据
         Integer pageNo = Integer.valueOf(userManageForm.getPageNo());
         Integer pageSize = Integer.valueOf(userManageForm.getPageSize());
         Page<User> page = new Page<>(pageNo, pageSize);
+        Page<User> userPage;
 
-//        QueryWrapper<User> wrapper = new QueryWrapper<>();
-//        User user = new User();
-//        user.setId(1);
-//        wrapper.setEntity(user);
-//        Page<User> userPage = this.page(page, wrapper);
+        // 携带用户名的特定搜索
+        String username = userManageForm.getUsername();
+        if (username != null){
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            User user = new User();
+            user.setUsername(username);
+            wrapper.setEntity(user);
+            userPage = this.page(page, wrapper);
+        }else {
+            userPage = this.page(page, null);
+        }
 
-        Page<User> userPage = this.page(page, null);
         Message message = new Message();
-
         message.setTotalCount(Math.toIntExact(userPage.getTotal()));
         List<User> records = userPage.getRecords();
         message.setData(records);
-
         message.initSuccessMessage();
         return message;
     }
@@ -86,9 +90,15 @@ public class UserManageServiceImpl extends ServiceImpl<UserMapper, User> impleme
     }
 
     @Override
-    public Message doDelete() {
+    public Message doDelete(doDeleteForm doDeleteForm) {
+        String ids = doDeleteForm.getIds();
+        String[] strings = ids.split(",");
+        for (String s : strings) {
+            userMapper.deleteById(s);
+        }
         Message message = new Message();
-        return null;
+        message.initSuccessMessage();
+        return message;
     }
 }
 
