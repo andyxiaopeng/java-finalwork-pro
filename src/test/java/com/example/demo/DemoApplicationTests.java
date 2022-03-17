@@ -1,12 +1,11 @@
 package com.example.demo;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.demo.mapper.NoticeMapper;
-import com.example.demo.model.entity.Notice;
+import com.example.demo.mapper.ChangeLogMapper;
+import com.example.demo.model.entity.ChangeLog;
 import com.example.demo.model.entity.User;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.vo.Message;
 import com.example.demo.utiles.RSAUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +20,29 @@ class DemoApplicationTests {
     private UserMapper userMapper;
 
     @Autowired(required = false)
-    private NoticeMapper noticeMapper;
+    private ChangeLogMapper changeLogMapper;
+
+    @Test
+    void insettest(){
+
+    }
 
     @Test
     void getUserList() {
-        QueryWrapper<Notice> qw = new QueryWrapper<>();
-        List<Notice> notices = noticeMapper.selectList(qw);
-        Message message = new Message();
-        message.setData(notices);
-        message.initSuccessMessage();
-        System.out.println(message);
+        // 创建文本
+        String content = "test";
+        // 创建时间
+        DateUtil dateUtil = new DateUtil();
+        String timestamp = dateUtil.now();
+
+        ChangeLog changeLog = new ChangeLog();
+        changeLog.setContent(content);
+        changeLog.setTimestamp(timestamp);
+
+        System.out.println(changeLog);
+
+        // 写入数据库
+        changeLogMapper.insert(changeLog);
     }
 
     @Test

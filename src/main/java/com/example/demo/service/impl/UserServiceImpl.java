@@ -12,14 +12,12 @@ import com.example.demo.model.vo.Message;
 import com.example.demo.service.UserService;
 import com.example.demo.utiles.JWTUtils;
 import com.example.demo.utiles.RSAUtils;
-import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -34,6 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired(required = false)
     private UserMapper userMapper;
+
+    @Autowired(required = false)
+    private ChangeLogServiceImpl changeLogServiceImpl;
 
     @Override
     public Message getPublicKey() {
@@ -116,13 +117,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
 
+
+
         for (User user : users) {
             objectObjectHashMap.put("username",user.getUsername());//用户名字
 
-            ArrayList<String> permissions = new ArrayList<>();//用户权限
-            permissions.add("admin");
-            permissions.add("editor");
-            objectObjectHashMap.put("permissions",permissions);
+
+            changeLogServiceImpl.insertChangeLog(user.getUsername(),"login");
+
+            String permissions = user.getPermissions();//用户权限
+            objectObjectHashMap.put("permissions",permissions.split(","));
 
             ArrayList<String> avatar = new ArrayList<>();//用户头像链接
             avatar.add("https://i.gtimg.cn/club/item/face/img/2/15922_100.gif");
@@ -131,8 +135,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         }
 
-        message.setData(objectObjectHashMap);
 
+
+
+        message.setData(objectObjectHashMap);
         message.initSuccessMessage();
         return message;
     }

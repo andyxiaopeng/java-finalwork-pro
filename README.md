@@ -1,5 +1,19 @@
 # java-finalwork-pro
 
+# 技术栈分析
+
+## rsa加密
+
+## mybatis-plus
+
+## mqtt&Emq
+
+## jwt的token生成策略
+
+## SpringBoot
+
+## mysql & influxdb & redis
+
 # 系统分析
 
 ## 1、用户登录及其权限控制
