@@ -1,26 +1,27 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.vo.Message;
-import com.example.demo.service.impl.ChangeLogServiceImpl;
+import com.example.demo.service.impl.DataShowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Random;
 
 @RestController
-@RequestMapping("changeLog")
+@RequestMapping("dataShow")
 @CrossOrigin(origins = "*",maxAge = 3600)
-public class ChangeLog {
+public class DataShowController {
 
     @Autowired(required = false)
-    private ChangeLogServiceImpl changeLogServiceImpl;
+    private DataShowServiceImpl dataShowServiceImpl;
+
 
     @RequestMapping("getList")
-    private Message changeGetList(){
-        return changeLogServiceImpl.getList();
+    private Message dataShwoGetList() {
+        return dataShowServiceImpl.getList();
     }
 }

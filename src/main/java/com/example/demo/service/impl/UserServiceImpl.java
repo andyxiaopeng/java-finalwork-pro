@@ -123,7 +123,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             objectObjectHashMap.put("username",user.getUsername());//用户名字
 
 
-            changeLogServiceImpl.insertChangeLog(user.getUsername(),"login");
+            changeLogServiceImpl.insertChangeLog(user.getUsername(),"login");//写登录log
 
             String permissions = user.getPermissions();//用户权限
             objectObjectHashMap.put("permissions",permissions.split(","));

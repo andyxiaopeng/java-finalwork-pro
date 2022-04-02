@@ -7,14 +7,22 @@ import com.example.demo.model.entity.ChangeLog;
 import com.example.demo.model.entity.User;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.utiles.RSAUtils;
+import com.example.demo.utiles.mqtt.objects.MessageListener;
+import com.example.demo.utiles.mqtt.util.MqttUtil;
+import com.example.demo.utiles.redis.util.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
 class DemoApplicationTests {
+
+    @Resource
+    private RedisUtil redisUtil;
 
     @Autowired(required = false)
     private UserMapper userMapper;
@@ -22,10 +30,33 @@ class DemoApplicationTests {
     @Autowired(required = false)
     private ChangeLogMapper changeLogMapper;
 
-    @Test
-    void insettest(){
+    @Autowired(required = false)
+    private MessageListener messageListener;
 
+    @Test
+    void mqttLiten(){
+        MqttUtil.subscribe("test01", messageListener);
     }
+    @Test
+    void insetRedis(){
+//        String key = "id";
+//        String value = "852";
+
+        String key = "device001";
+
+        HashMap<String, Integer> values = new HashMap<>();
+        values.put("agp",266);
+        values.put("temp",566);
+
+        redisUtil.set(key,values);
+    }
+    @Test
+    void getRedis(){
+        String key = "device001";
+        Object o = redisUtil.get(key);
+        System.out.println(o);
+    }
+
 
     @Test
     void getUserList() {
