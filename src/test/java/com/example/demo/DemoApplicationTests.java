@@ -1,8 +1,12 @@
 package com.example.demo;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.manage.RedisDataManage;
 import com.example.demo.mapper.ChangeLogMapper;
+import com.example.demo.model.dto.RedisDataBean;
 import com.example.demo.model.entity.ChangeLog;
 import com.example.demo.model.entity.User;
 import com.example.demo.mapper.UserMapper;
@@ -16,7 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -48,15 +54,108 @@ class DemoApplicationTests {
         values.put("agp",266);
         values.put("temp",566);
 
-        redisUtil.set(key,values);
+        HashMap<String,HashMap<String, Integer>> data = new HashMap<>();
+        data.put(key,values);
+
+        redisUtil.set("data",data);
     }
     @Test
     void getRedis(){
-        String key = "device001";
+        String key = "data";
         Object o = redisUtil.get(key);
         System.out.println(o);
     }
 
+    @Test
+    void updateRedis(){
+        String key = "data";
+        String redisStr = redisUtil.get(key).toString();
+
+        System.out.println(redisStr);
+
+        RedisDataBean redisDataBean = JSONObject.parseObject(redisStr, RedisDataBean.class);
+        System.out.println(redisDataBean);
+
+//        RedisDataBean redisDataBean = JSONUtil.toBean(o.toString(), RedisDataBean.class);
+//
+//        HashMap<String, HashMap<String, Integer>> data = redisDataBean.getData();
+//        HashMap<String, Integer> device001 = data.get("device001");
+//
+//        System.out.println("data"+data);
+//        System.out.println();
+//        System.out.println("device001"+device001);
+    }
+
+    @Test
+    void testJavaRedis(){
+        Set<String> aa = new HashSet<>();
+
+        boolean addBoolean = aa.add("123");
+        System.out.println(addBoolean);
+
+
+        addBoolean = aa.add("3");
+        System.out.println(addBoolean);
+
+        addBoolean = aa.add("123");
+        System.out.println(addBoolean);
+
+        for (String s : aa){
+            System.out.println(s);
+        }
+
+    }
+
+    @Test
+    void testRedisDataBean(){
+        RedisDataBean redisDataBean = new RedisDataBean();
+
+
+        HashMap<String, Integer> data = new HashMap<>();
+        data.put("key1",123);
+        System.out.println(data);
+
+        data.put("key2",123);
+        System.out.println(data);
+
+        data.put("key1",456);
+        System.out.println(data);
+
+
+    }
+
+    @Test
+    void testRedisDataManage(){
+        RedisDataManage.init();
+        String key1 = "device-01-t";
+        String key2 = "device-01-p";
+
+        RedisDataManage.insertRedisAttributeList(key1);
+        RedisDataManage.insertRedisAttributeList(key2);
+
+        Set<String> redisAttributeList = RedisDataManage.redisAttributeList;
+        for (String key : redisAttributeList) {
+            redisUtil.set(key,666);
+        }
+
+        RedisDataBean allRedisData = RedisDataManage.getAllRedisData(redisUtil);
+
+        System.out.println(allRedisData);
+    }
+
+    @Test
+    void testRedisDataManageGet(){
+        RedisDataManage.init();
+
+        Set<String> redisAttributeList = RedisDataManage.redisAttributeList;
+        for (String key : redisAttributeList) {
+            redisUtil.set(key,666);
+        }
+
+        RedisDataBean allRedisData = RedisDataManage.getAllRedisData(redisUtil);
+
+        System.out.println(allRedisData);
+    }
 
     @Test
     void getUserList() {

@@ -199,3 +199,12 @@
    ```
 
    
+
+## 3、数据展示模块
+
+从python模拟数据采集到后端处理再反馈前端的流程解析
+
+![从python模拟数据采集到后端处理再反馈前端的流程图](E:\all_projection\javap\demo\README.assets\从python模拟数据采集到后端处理再反馈前端的流程图.png)
+
+
+

@@ -1,6 +1,7 @@
 package com.example.demo.utiles.mqtt.objects;
 
 import cn.hutool.json.JSONUtil;
+import com.example.demo.manage.RedisDataManage;
 import com.example.demo.manage.SpringUtil;
 import com.example.demo.model.dto.MqttDataBean;
 import com.example.demo.utiles.redis.util.RedisUtil;
@@ -31,25 +32,32 @@ public class MessageListener implements IMqttMessageListener {
          * 根据设备名和属性名来存入mqtt的store中
          */
 
-        MqttDataBean mqttDataBean = JSONUtil.toBean(jsonString, MqttDataBean.class);
-
-        HashMap<String, String> data = mqttDataBean.getData();
-        String deviceId = mqttDataBean.getDeviceId();
-        HashMap<String, Integer> hashMap = new HashMap();
-
-        Set<String> keySet = data.keySet();
-        for (String key : keySet) {
-            hashMap.put(key, Integer.valueOf(data.get(key)));
-        }
-
-        System.out.println(hashMap);
-
-
-//        不能直接在回调方法中使用注解形式来获取对象和Service（如@Autowired、@Service），直接使用注解会报java.lang.NullException错误,然后断开MQTT连接。
+        //        不能直接在回调方法中使用注解形式来获取对象和Service（如@Autowired、@Service），直接使用注解会报java.lang.NullException错误,然后断开MQTT连接。
         ApplicationContext context = SpringUtil.context;  //获取Spring容器
         RedisUtil redisUtil = context.getBean(RedisUtil.class);  //获取bean
 
-        System.out.println(redisUtil.set(deviceId,hashMap));
+
+        // 根据mqtt所传的json转换成mqttData的bean ==》  方便操作
+        MqttDataBean mqttDataBean = JSONUtil.toBean(jsonString, MqttDataBean.class);
+
+        // 把mqttDataBean的data部分取出来
+        HashMap<String, String> data = mqttDataBean.getData();
+
+        // 把mqttDataBean的设备id取出来
+        String deviceId = mqttDataBean.getDeviceId();
+
+        // 开始处理data部分
+        RedisDataManage.init();// redis数据管理类初始化
+        HashMap<String, Integer> hashMap = new HashMap();
+        Set<String> keySet = data.keySet();
+        for (String key : keySet) {
+            String redisAttribute = new String(deviceId + key);
+            RedisDataManage.insertRedisAttributeList(redisAttribute);
+            boolean setBoolean = redisUtil.set(redisAttribute, data.get(key));
+            System.out.println("key: " + key + "value: " + data.get(key) + " status: " + setBoolean);
+        }
+
+        System.out.println(hashMap);
     }
 
 }
