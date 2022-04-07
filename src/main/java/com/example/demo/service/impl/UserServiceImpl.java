@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         qw.eq("account", account);
         List<User> users = userMapper.selectList(qw);
         if (users.size() == 0){
-             message.initErrorMessage();
+             message.invalidCodeMessage();
             return message;
         }
         for (User user : users) {
@@ -97,7 +97,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
 
         }
-        return null;
+        message.invalidCodeMessage();
+        return message;
     }
 
     @Override

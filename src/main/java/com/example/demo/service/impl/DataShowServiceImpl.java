@@ -24,15 +24,9 @@ public class DataShowServiceImpl extends ServiceImpl<DataShowMapper, DataShow> i
     public Message getList() {
         Message message = new Message();
 
-//        HashMap<String, Integer> stringListHashMap = new HashMap();
-//        stringListHashMap.put("a1",new Random().nextInt(1000));
-//        message.setData(stringListHashMap);
-
         RedisDataBean allRedisData = RedisDataManage.getAllRedisData(redisUtil);
         HashMap<String, Integer> data = allRedisData.getData();
 
-//        Object values = redisUtil.get("test-001-device");
-//        System.out.println(values);
         message.setData(data);
 
         message.initSuccessMessage();
