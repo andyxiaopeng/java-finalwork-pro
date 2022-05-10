@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -38,6 +35,9 @@ class DemoApplicationTests {
 
     @Autowired(required = false)
     private MessageListener messageListener;
+
+    @Autowired(required = false)
+    private RedisDataManage redisDataManage;
 
     @Test
     void mqttLiten(){
@@ -87,6 +87,22 @@ class DemoApplicationTests {
     }
 
     @Test
+    void testRedisList(){
+
+        ArrayList<Object> list = new ArrayList<>();
+
+        for (int i =0;i<10;i++) {
+            HashMap<String, Long> hashMap = new HashMap<>();
+            hashMap.put("time",new Date().getTime());
+            hashMap.put("key1", Long.valueOf(i));
+            hashMap.put("key2",Long.valueOf(i*10));
+            list.add(hashMap);
+        }
+
+        System.out.println(list);
+    }
+
+    @Test
     void testJavaRedis(){
         Set<String> aa = new HashSet<>();
 
@@ -126,33 +142,33 @@ class DemoApplicationTests {
 
     @Test
     void testRedisDataManage(){
-        RedisDataManage.init();
+        redisDataManage.init();
         String key1 = "device-01-t";
         String key2 = "device-01-p";
 
-        RedisDataManage.insertRedisAttributeList(key1);
-        RedisDataManage.insertRedisAttributeList(key2);
+        redisDataManage.insertRedisAttributeList(key1);
+        redisDataManage.insertRedisAttributeList(key2);
 
-        Set<String> redisAttributeList = RedisDataManage.redisAttributeList;
+        Set<String> redisAttributeList = redisDataManage.redisKeys;
         for (String key : redisAttributeList) {
             redisUtil.set(key,666);
         }
 
-        RedisDataBean allRedisData = RedisDataManage.getAllRedisData(redisUtil);
+        RedisDataBean allRedisData = redisDataManage.getAllRedisData(redisUtil);
 
         System.out.println(allRedisData);
     }
 
     @Test
     void testRedisDataManageGet(){
-        RedisDataManage.init();
+        redisDataManage.init();
 
-        Set<String> redisAttributeList = RedisDataManage.redisAttributeList;
+        Set<String> redisAttributeList = redisDataManage.redisKeys;
         for (String key : redisAttributeList) {
             redisUtil.set(key,666);
         }
 
-        RedisDataBean allRedisData = RedisDataManage.getAllRedisData(redisUtil);
+        RedisDataBean allRedisData = redisDataManage.getAllRedisData(redisUtil);
 
         System.out.println(allRedisData);
     }

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 public class DataShowServiceImpl extends ServiceImpl<DataShowMapper, DataShow> implements DataShowService {
@@ -20,16 +22,32 @@ public class DataShowServiceImpl extends ServiceImpl<DataShowMapper, DataShow> i
     @Resource
     private RedisUtil redisUtil;
 
+    @Resource
+    private RedisDataManage redisDataManage;
+
     @Override
     public Message getList() {
         Message message = new Message();
 
-        RedisDataBean allRedisData = RedisDataManage.getAllRedisData(redisUtil);
-        HashMap<String, Integer> data = allRedisData.getData();
+        HashMap<String, List> listAllRedisData = redisDataManage.getListAllRedisData(redisUtil);
+        System.out.println(listAllRedisData);
 
-        message.setData(data);
+        message.setData(listAllRedisData);
 
         message.initSuccessMessage();
         return message;
     }
+
+//    @Override
+//    public Message getList() {
+//        Message message = new Message();
+//
+//        RedisDataBean allRedisData = redisDataManage.getAllRedisData(redisUtil);
+//        HashMap<String, Integer> data = allRedisData.getData();
+//
+//        message.setData(data);
+//
+//        message.initSuccessMessage();
+//        return message;
+//    }
 }
